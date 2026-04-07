@@ -5,14 +5,14 @@ import { useState } from "react";
 export default function WaitlistForm() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!email) return;
 
     setStatus("loading");
-    setErrorMsg("");
+    setErrorMessage("");
 
     try {
       const res = await fetch("https://boringcombinator.com/api/waitlist", {
@@ -25,32 +25,35 @@ export default function WaitlistForm() {
       });
 
       if (!res.ok) {
-        throw new Error("Something went wrong. Try again.");
+        throw new Error("Something went wrong. Please try again.");
       }
 
       setStatus("success");
       setEmail("");
     } catch (err) {
       setStatus("error");
-      setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
+      setErrorMessage(
+        err instanceof Error ? err.message : "Something went wrong."
+      );
     }
   }
 
   if (status === "success") {
     return (
-      <div style={{ textAlign: "center", padding: "24px 0" }}>
+      <div
+        style={{
+          textAlign: "center",
+          padding: "20px 0",
+        }}
+      >
         <p
           style={{
             fontFamily: "var(--font-serif)",
-            fontSize: "20px",
+            fontSize: "18px",
             color: "var(--color-fg)",
-            marginBottom: "8px",
           }}
         >
-          You&apos;re on the list.
-        </p>
-        <p style={{ fontSize: "15px", color: "var(--color-muted)" }}>
-          We&apos;ll be in touch soon.
+          You're on the list. We'll be in touch soon.
         </p>
       </div>
     );
@@ -61,55 +64,76 @@ export default function WaitlistForm() {
       onSubmit={handleSubmit}
       style={{
         display: "flex",
-        flexDirection: "column",
-        gap: "12px",
+        gap: "10px",
+        maxWidth: "440px",
         width: "100%",
-        maxWidth: "420px",
-        margin: "0 auto",
+        flexWrap: "wrap",
+        justifyContent: "center",
       }}
     >
-      <div
+      <input
+        type="email"
+        required
+        placeholder="you@company.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         style={{
-          display: "flex",
-          gap: "8px",
-          flexDirection: "column",
+          flex: "1 1 260px",
+          padding: "12px 16px",
+          fontSize: "15px",
+          fontFamily: "var(--font-sans)",
+          border: "0.5px solid rgba(0,0,0,0.15)",
+          borderRadius: "8px",
+          outline: "none",
+          backgroundColor: "var(--color-bg)",
+          color: "var(--color-fg)",
+          transition: "border-color 150ms ease",
+          minWidth: "0",
+        }}
+        onFocus={(e) =>
+          (e.currentTarget.style.borderColor = "rgba(0,0,0,0.4)")
+        }
+        onBlur={(e) =>
+          (e.currentTarget.style.borderColor = "rgba(0,0,0,0.15)")
+        }
+      />
+      <button
+        type="submit"
+        disabled={status === "loading"}
+        style={{
+          padding: "12px 28px",
+          fontSize: "14px",
+          fontFamily: "var(--font-sans)",
+          fontWeight: 500,
+          backgroundColor: "var(--color-fg)",
+          color: "var(--color-bg)",
+          border: "none",
+          borderRadius: "8px",
+          cursor: status === "loading" ? "wait" : "pointer",
+          transition: "opacity 150ms ease",
+          opacity: status === "loading" ? 0.6 : 1,
+          whiteSpace: "nowrap",
+        }}
+        onMouseEnter={(e) => {
+          if (status !== "loading") e.currentTarget.style.opacity = "0.8";
+        }}
+        onMouseLeave={(e) => {
+          if (status !== "loading") e.currentTarget.style.opacity = "1";
         }}
       >
-        <input
-          type="email"
-          required
-          placeholder="you@company.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+        {status === "loading" ? "Joining..." : "Join Waitlist"}
+      </button>
+      {status === "error" && (
+        <p
           style={{
             width: "100%",
-            padding: "12px 16px",
-            fontSize: "15px",
-            fontFamily: "var(--font-sans)",
-            border: "0.5px solid var(--color-border)",
-            borderRadius: "8px",
-            background: "var(--color-bg)",
-            color: "var(--color-fg)",
-            outline: "none",
-            transition: "border-color 150ms ease",
-          }}
-        />
-        <button
-          type="submit"
-          disabled={status === "loading"}
-          className="btn-primary"
-          style={{
-            width: "100%",
-            padding: "14px 28px",
-            opacity: status === "loading" ? 0.6 : 1,
+            textAlign: "center",
+            fontSize: "14px",
+            color: "#b91c1c",
+            marginTop: "4px",
           }}
         >
-          {status === "loading" ? "Joining..." : "Join Waitlist"}
-        </button>
-      </div>
-      {status === "error" && (
-        <p style={{ fontSize: "14px", color: "#b91c1c", textAlign: "center" }}>
-          {errorMsg}
+          {errorMessage}
         </p>
       )}
     </form>

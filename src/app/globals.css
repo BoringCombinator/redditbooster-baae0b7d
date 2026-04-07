@@ -21,15 +21,16 @@
 }
 
 html {
-  font-family: var(--font-sans);
-  color: var(--color-fg);
-  background: var(--color-bg);
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  min-height: 100vh;
+  font-family: var(--font-sans);
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+  line-height: 1.6;
 }
 
 h1,
@@ -41,81 +42,9 @@ h6 {
   font-family: var(--font-serif);
   font-weight: 400;
   line-height: 1.2;
-  letter-spacing: -0.01em;
 }
 
 ::selection {
-  background: var(--color-fg);
+  background-color: var(--color-fg);
   color: var(--color-bg);
-}
-
-input::placeholder {
-  color: var(--color-muted);
-}
-
-/* Utility classes */
-.section-padding {
-  padding-top: 80px;
-  padding-bottom: 80px;
-}
-
-@media (min-width: 768px) {
-  .section-padding {
-    padding-top: 120px;
-    padding-bottom: 120px;
-  }
-}
-
-.content-width {
-  max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 24px;
-  padding-right: 24px;
-}
-
-@media (min-width: 768px) {
-  .content-width {
-    padding-left: 48px;
-    padding-right: 48px;
-  }
-}
-
-.card {
-  border: 0.5px solid var(--color-border);
-  border-radius: 12px;
-  background: var(--color-surface);
-  padding: 32px;
-}
-
-@media (min-width: 768px) {
-  .card {
-    padding: 40px;
-  }
-}
-
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-fg);
-  color: var(--color-bg);
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 500;
-  padding: 12px 28px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: opacity 150ms ease;
-  text-decoration: none;
-  line-height: 1;
-}
-
-.btn-primary:hover {
-  opacity: 0.8;
-}
-
-.mono {
-  font-family: var(--font-mono);
 }
